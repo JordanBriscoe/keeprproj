@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using keepr.Repositories;
+using Keepr.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,22 +37,22 @@ namespace Keepr
           options.LoginPath = "/Account/Login";
           options.Events.OnRedirectToLogin = (context) =>
                   {
-                context.Response.StatusCode = 401;
-                return Task.CompletedTask;
-              };
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                  };
         });
       services.AddCors(options =>
           {
             options.AddPolicy("CorsDevPolicy", builder =>
                   {
-                builder
-                          .WithOrigins(new string[]{
+                    builder
+                              .WithOrigins(new string[]{
                                 "http://localhost:8080"
-                      })
-                          .AllowAnyMethod()
-                          .AllowAnyHeader()
-                          .AllowCredentials();
-              });
+                          })
+                              .AllowAnyMethod()
+                              .AllowAnyHeader()
+                              .AllowCredentials();
+                  });
           });
 
       services.AddMvc();
@@ -60,6 +61,9 @@ namespace Keepr
 
       services.AddTransient<IDbConnection>(x => CreateDBContext());
       services.AddTransient<UserRepository>();
+      services.AddTransient<VaultsRepository>();
+      services.AddTransient<KeepsRepository>();
+
 
 
     }
