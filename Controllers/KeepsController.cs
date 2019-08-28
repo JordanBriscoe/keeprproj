@@ -21,11 +21,12 @@ namespace Keepr.Controllers
 
 
     // FIXME ASK QUESTIONS HERE 
-    // [HttpGet("user")]
-    // public ActionResult<IEnumerable<Keep>> GetUserKeeps()
-    // {
-    //   return Ok(_kr.GetUserKeeps());
-    // }
+    [HttpGet("user")]
+    public ActionResult<IEnumerable<Keep>> GetUserKeeps(string userId)
+    {
+      userId = HttpContext.User.FindFirstValue("Id");
+      return Ok(_kr.GetUserKeeps(userId));
+    }
 
     [HttpGet]
     public ActionResult<IEnumerable<Keep>> Get()
@@ -36,7 +37,7 @@ namespace Keepr.Controllers
     [HttpGet("{id}")]
     public ActionResult<Keep> GetOne(string id)
     {
-      return Ok(_kr.GetbyId(id));
+      return Ok(_kr.GetbyKeepId(id));
     }
 
     [HttpDelete("{id}")]
