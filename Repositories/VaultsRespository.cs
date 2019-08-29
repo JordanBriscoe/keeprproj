@@ -24,7 +24,7 @@ namespace Keepr.Repositories
       string query = "SELECT * FROM vaults WHERE id = @Id";
       return _db.QueryFirstOrDefault<Vault>(query, new { Id });
     }
-
+    // test push still works
     public Vault CreateVault(Vault vault)
     {
       _db.Execute("INSERT INTO vaults (name, description) VALUES(@Name, @Description)", vault);
