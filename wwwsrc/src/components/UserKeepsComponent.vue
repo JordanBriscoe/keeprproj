@@ -1,6 +1,6 @@
 <template>
-  <div class="Keep">
-    <div class="row" v-for="keep in keeps">
+  <div class="UsersKeeps">
+    <div class="row" v-for="keep in userkeeps">
       <div class="col-3">
         <div class="card mb-3">
           <div class="row no-gutters">
@@ -25,13 +25,13 @@
 
 <script>
   export default {
-    name: 'Keep',
+    name: 'UsersKeeps',
     data() {
       return {}
     },
     computed: {
-      keeps() {
-        return this.$store.state.keeps
+      userkeeps() {
+        return this.$store.state.userkeeps
       }
     },
     methods: {

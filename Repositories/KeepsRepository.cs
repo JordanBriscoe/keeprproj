@@ -13,51 +13,36 @@ namespace Keepr.Repositories
       _db = db;
     }
 
-    // Creates a Keep=
-    #region 
     public Keep CreateKeep(Keep keep)
     {
-      _db.Execute("INSERT INTO keeps (name, description, img, isprivate, userId) VALUES (@Name, @Description, @Img, @IsPrivate, @UserId)", keep);
+      int id = _db.ExecuteScalar<int>(@"INSERT INTO keeps (name, img, description, userId, isprivate)
+      VALUES (@Name, @Img, @Description, @UserId, @IsPrivate);
+      SELECT LAST_INSERT_ID();", keep);
+      keep.Id = id;
       return keep;
     }
-    #endregion
 
-    // Get Public Keeps=
-    #region 
-    public IEnumerable<Keep> GetAll()
+    public IEnumerable<Keep> GetAllPublicKeeps(int isprivate)
     {
-      return _db.Query<Keep>("SELECT * FROM keeps WHERE isPrivate = 0");
+      return _db.Query<Keep>("SELECT * FROM keeps WHERE isPrivate = @IsPrivate", new { isprivate });
     }
-    #endregion
 
-    // Get Keeps by ID
-    #region
-    public Keep GetbyKeepId(string id)
+    public IEnumerable<Keep> GetKeepsByUserId(string userId)
     {
-      string query = "SELECT * FROM keeps WHERE id = @Id";
-      return _db.QueryFirstOrDefault<Keep>(query, new { id });
+      return _db.Query<Keep>("SELECT * FROM keeps WHERE userId = @UserId", new { userId });
     }
-    #endregion
 
-
-    // Get Keeps By UserId
-    #region 
-    public IEnumerable<Keep> GetUserKeeps(string userId)
+    public Keep GetKeepById(int Id)
     {
-      return _db.Query<Keep>("SELECT * FROM keeps WHERE userId = @userId", new { userId });
+      return _db.QueryFirstOrDefault<Keep>("SELECT * FROM keeps WHERE id = @Id", new { Id });
     }
-    #endregion
 
     // STRETCH GOAL is to do an EDIT
 
-    // Deletes a keep=
-    #region 
-    public bool DeleteKeep(string keepId)
+    public bool DeleteKeepById(int id)
     {
-      int success = _db.Execute("DELETE FROM keeps WHERE id = @keepId", new { keepId });
+      int success = _db.Execute("DELETE FROM keeps WHERE id = @Id", new { id });
       return success > 0;
     }
-    #endregion
-
   }
 }

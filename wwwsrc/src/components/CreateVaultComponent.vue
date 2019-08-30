@@ -7,8 +7,6 @@
       <input type="text" name="description" placeholder="Create a Description" v-model="newVault.description"><br>
       <button type="submit">Create</button>
     </form>
-
-
   </div>
 </template>
 
@@ -29,7 +27,7 @@
     },
     computed: {},
     methods: {
-      addCreatedVault(e) {
+      addCreatedVault() {
         this.$store.dispatch('addCreatedVault', this.newVault)
         router.push({ name: 'vaults' })
       }

@@ -13,23 +13,26 @@ namespace Keepr.Repositories
       _db = db;
     }
 
-    // Gets all Vaults from the database
-    public IEnumerable<Vault> GetAll()
-    {
-      return _db.Query<Vault>("SELECT * FROM vaults");
-    }
-
-    public Vault GetbyId(string Id)
-    {
-      string query = "SELECT * FROM vaults WHERE id = @Id";
-      return _db.QueryFirstOrDefault<Vault>(query, new { Id });
-    }
-    // test push still works
     public Vault CreateVault(Vault vault)
     {
-      _db.Execute("INSERT INTO vaults (name, description) VALUES(@Name, @Description)", vault);
+      int id = _db.ExecuteScalar<int>(@"INSERT INTO vaults (name, description, userId)VALUES(@Name, @Description, @UserId);
+      SELECT LAST_INSERT_ID();", vault);
+      vault.Id = id;
       return vault;
     }
+
+    // Gets all Vaults from the database
+    public IEnumerable<Vault> GetVaultsByUser(string userId)
+    {
+      return _db.Query<Vault>("SELECT * FROM vaults WHERE userId = @userId", new { userId });
+    }
+
+    // public Vault GetbyId(string Id)
+    // {
+    //   string query = "SELECT * FROM vaults WHERE id = @Id";
+    //   return _db.QueryFirstOrDefault<Vault>(query, new { Id });
+    // }
+    // test push still works
 
     //TODO Stretch Goal is to create an EDIT
 

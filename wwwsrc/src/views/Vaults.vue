@@ -8,12 +8,12 @@
       </div>
       <div>
         <vaults></vaults>
-        <button @click="createAVault">Create Vault</button>
+        <userkeeps></userkeeps>
+        <button @click="createAVault">Create Vault</button> <br>
+        <button @click="createAKeep">Create Keep</button> <br>
+        <button @click="goHome">User Page</button>
       </div>
-
     </div>
-
-
   </div>
 </template>
 
@@ -22,6 +22,7 @@
 
   import router from '../router'
   import vaults from '../components/VaultsComponent.vue'
+  import userkeeps from '../components/UserKeepsComponent.vue'
 
   export default {
     name: 'Vaults',
@@ -30,7 +31,8 @@
     },
 
     mounted() {
-      this.$store.dispatch('getVaults')
+      this.$store.dispatch('getVaults');
+      this.$store.dispatch('getUsersKeeps')
     },
 
     computed: {
@@ -41,10 +43,18 @@
     methods: {
       createAVault() {
         router.push({ name: "CreateVault" })
+      },
+      createAKeep() {
+        router.push({ name: "CreateKeep" })
+      },
+      goHome() {
+        router.push({ name: "home" })
       }
     },
+
     components: {
-      vaults
+      vaults,
+      userkeeps
     }
   }
 </script>
